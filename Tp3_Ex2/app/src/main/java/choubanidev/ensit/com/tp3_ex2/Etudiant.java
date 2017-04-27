@@ -20,7 +20,11 @@ public class Etudiant implements Parcelable {
         this.abs = abs;
     }
 
-    public Etudiant(String nom, String email,String option, int abs) {
+    public Etudiant(String nom) {
+        this.nom = nom;
+    }
+
+    public Etudiant(String nom, String email, String option, int abs) {
 
         this.option = option;
         this.nom = nom;

@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     EditText nom;
 
     final int ADD_ITEM_ACTIVITY = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,AddStudent.class);
                 startActivityForResult(intent,ADD_ITEM_ACTIVITY);
             }
+
+            else if(id ==R.id.modifier)
+            {
+                Toast.makeText(getApplicationContext(), "modification d'un etudiant", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,ModifierStudent.class);
+                startActivityForResult(intent,ADD_ITEM_ACTIVITY);
+            }
+
+            else if(id ==R.id.supprimer)
+            {
+                Toast.makeText(getApplicationContext(), "suppresion d'un etudiant", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,SupprimerStudent.class);
+                startActivityForResult(intent,ADD_ITEM_ACTIVITY);
+            }
             return super.onOptionsItemSelected(item);
         }
 
@@ -61,11 +76,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode != ADD_ITEM_ACTIVITY) return;
-        if (resultCode != RESULT_OK) return;
-        Etudiant etudiant = data.getParcelableExtra("newetudiant");
-        db.addListEtudiant(etudiant);
+        else if (resultCode == RESULT_OK ) {
+            Etudiant etudiant = data.getParcelableExtra("newetudiant");
+            db.addListEtudiant(etudiant);
+
+        }
+        else if (resultCode ==1)
+        {
+            Etudiant etudiant = data.getParcelableExtra("modifierEtudiant");
+           int test= db.updateData(etudiant);
+            if( test !=0) Toast.makeText(getApplicationContext(), "modification terminée avec succès de "+etudiant.getNom(), Toast.LENGTH_LONG).show();
+        }
+
+        else if (resultCode ==2)
+        {
+            Etudiant etudiant = data.getParcelableExtra("supprimerEtudiant");
+            int test= db.deleteData(etudiant);
+            if( test !=0) Toast.makeText(getApplicationContext(), "suppression de "+etudiant.getNom()+" terminée avec succès", Toast.LENGTH_LONG).show();
+        }
         myAdapter.updateCursor(db.getAllEtudiant());
     }
+
+
 
 
 

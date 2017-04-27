@@ -28,7 +28,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ETUDIANT_TABLE = "CREATE TABLE " + TABLE_NAME
                 + "("
-                + ID + " INTEGER PRIMARY KEY,"
+                + ID + " INTEGER PRIMARY KEY ,"
                 + NOM + " TEXT, "
                 + EMAIL + " TEXT, "
                 + OPTION + " TEXT, "
@@ -71,6 +71,29 @@ public class SQLHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
 
         return cursor.getCount();
+    }
+
+
+    public int updateData(Etudiant etudiant)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOM, etudiant.getNom());
+        values.put(EMAIL, etudiant.getEmail());
+        values.put(OPTION, etudiant.getOption());
+        values.put(ABS, etudiant.getAbs());
+       int r= db.update(TABLE_NAME,values,"nom=?",new  String[] {etudiant.getNom()} );
+        db.close();
+        return r;
+
+    }
+
+    public int deleteData(Etudiant etudiant)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+       int r= db.delete(TABLE_NAME,"nom=?",new  String[] {etudiant.getNom()});
+        return r;
+
     }
 
 
